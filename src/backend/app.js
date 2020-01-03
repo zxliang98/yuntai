@@ -40,6 +40,25 @@ app.get('/name', (req, res) => {
 //   res.send("ok")
 // })
 
+/**
+ * 添加用户
+ * query: name:
+ *        age:
+ *        gender:
+ */
+app.get('/addUser', (req, res) => {
+  let name = req.query.name
+  let age = req.query.age
+  let gender = req.query.gender
+  // SQL语句
+  let qSQL = `insert into user_info(name,age,gender) values('${name}',${age},'${gender}')`
+  // 操作数据库
+  connection.query(qSQL, (err, rows, fields) => {
+    if (err) throw err
+    res.send(JSON.stringify({ code: 200, msg: '添加成功', userInfo: { name: name, age: age, gender: gender } }))
+  })
+})
+
 app.listen(3000, () => {
   console.log('app listening on port 3000!')
 })
