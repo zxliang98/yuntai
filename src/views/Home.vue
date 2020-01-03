@@ -5,21 +5,24 @@
       <home-left-aside></home-left-aside>
     </el-aside>
     <el-container>
-      <el-header style="height:80px">Header</el-header>
+      <el-header style="height:80px">
+        <home-top-header></home-top-header>
+      </el-header>
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el-footer>Footer</el-footer>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import HomeLeftAside from './components/home-left-aside'
+import HomeLeftAside from './components/home-left-aside/HomeLeftAside'
+import HomeTopHeader from './components/home-top-header/HomeTopHeader'
 export default {
   name: 'home',
   components: {
-    HomeLeftAside
+    HomeLeftAside,
+    HomeTopHeader
   }
 }
 </script>
