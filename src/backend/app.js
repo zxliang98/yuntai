@@ -13,6 +13,12 @@ var connection = mysql.createConnection({
 // 创建链接
 connection.connect()
 
+// 1. 引入包(获取post接口的参数)
+const bodyParser = require('body-parser')
+
+// 2. 使用包(获取post接口的参数)
+app.use(bodyParser.urlencoded({ extended: false }))
+
 /**
  * 测试
  */
@@ -34,28 +40,28 @@ app.get('/name', (req, res) => {
   })
 })
 
-// app.post('/register', (req, res) => {
-//   console.log(req.body)
-//   console.log(res);
-//   res.send("ok")
-// })
-
 /**
  * 添加用户
- * query: name:
+ * body: name:
  *        age:
  *        gender:
  */
-app.get('/addUser', (req, res) => {
-  let name = req.query.name
-  let age = req.query.age
-  let gender = req.query.gender
+app.post('/addUser', (req, res) => {
+  let name = req.body.name
+  let age = req.body.age
+  let gender = req.body.gender
   // SQL语句
-  let qSQL = `insert into user_info(name,age,gender) values('${name}',${age},'${gender}')`
+  let qSQL = `insert into user_info(name,age,gender) values('${name}','${age}','${gender}')`
   // 操作数据库
   connection.query(qSQL, (err, rows, fields) => {
     if (err) throw err
-    res.send(JSON.stringify({ code: 200, msg: '添加成功', userInfo: { name: name, age: age, gender: gender } }))
+    res.json(
+      {
+        code: 200,
+        msg: '添加成功',
+        userInfo: { name: name, age: age, gender: gender }
+      }
+    )
   })
 })
 
