@@ -1,5 +1,7 @@
 <template>
-  <div>zone</div>
+  <div class="page-zone">
+    zone
+  </div>
 </template>
 
 <script>

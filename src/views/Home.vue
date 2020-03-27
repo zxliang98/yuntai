@@ -9,7 +9,7 @@
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer>联系我们:12345678901</el-footer>
     </el-container>
   </el-container>
 </template>
