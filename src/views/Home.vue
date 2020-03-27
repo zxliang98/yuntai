@@ -1,11 +1,13 @@
 <template>
   <el-container class="home">
-    <el-aside width="200px">
-      <div id="logo"></div>
+    <el-aside :width="leftAsideCollapse?'64px':'200px'">
+      <div id="logo" :style="leftAsideCollapse?'width:64px;background-position:8px':''"></div>
       <home-left-aside></home-left-aside>
     </el-aside>
     <el-container>
-      <el-header style="height:80px">Header</el-header>
+      <el-header style="height:80px">
+        <home-top-header></home-top-header>
+      </el-header>
       <el-main>
         <router-view></router-view>
       </el-main>
@@ -15,11 +17,18 @@
 </template>
 
 <script>
-import HomeLeftAside from './components/home-left-aside'
+import { mapState } from 'vuex'
+
+import HomeLeftAside from './components/home-left-aside/HomeLeftAside'
+import HomeTopHeader from './components/home-top-header/HomeTopHeader'
 export default {
   name: 'home',
   components: {
-    HomeLeftAside
+    HomeLeftAside,
+    HomeTopHeader
+  },
+  computed: {
+    ...mapState(['leftAsideCollapse'])
   }
 }
 </script>

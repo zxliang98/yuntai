@@ -6,10 +6,17 @@ import PagesTicket from '@/views/pages-ticket/PagesTicket'
 import PagesNotice from '@/views/pages-notice/PagesNotice'
 import PagesZone from '@/views/pages-zone/PagesZone'
 import PagesStaff from '@/views/pages-staff/PagesStaff'
+import PagesAbout from './../views/pages-about/PagesAbout'
+
+import Login from './../views/login/login'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/login',
+    component: Login
+  },
   {
     path: '/',
     redirect: '/home',
@@ -35,6 +42,10 @@ const routes = [
         path: '/staff',
         name: 'pages-staff',
         component: PagesStaff
+      }, {
+        path: '/about',
+        name: 'pages-about',
+        component: PagesAbout
       }
     ]
   }

@@ -27,5 +27,10 @@ export const HOMELEFTASIDE = [
     route: 'staff',
     icon: 'el-icon-user',
     text: '员工管理'
+  }, {
+    id: 6,
+    route: 'about',
+    icon: 'el-icon-loading',
+    text: '关于我们'
   }
 ]
