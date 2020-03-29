@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import User from '@/http/User'
 export default {
   data () {
     var checkConfirmPassward = (rule, value, callback) => {
@@ -129,6 +130,13 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.loginInfo)
+          let params = {
+            phoneNum: this.loginInfo.mobile,
+            userPassword: this.loginInfo.passward
+          }
+          User.userLogin(this, params).then(res => {
+            console.log(res)
+          })
         } else {
           console.log('error submit!!')
           return false

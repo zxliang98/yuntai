@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 35.4201789,113.367424,13 -->
-    <el-image :src="imgWelcome"></el-image>
+    <!-- <el-image :src="imgWelcome"></el-image> -->
     <baidu-map
       class="map"
       :center="{lng: 113.367424, lat: 35.4201789}"
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import imgWelcome from '@/assets/imgs/welcome.jpg'
+// import imgWelcome from '@/assets/imgs/welcome.jpg'
 export default {
   data () {
     return {
-      imgWelcome,
+      // imgWelcome,
       center: { lng: 126.150394, lat: 41.9870815 },
       zoom: 0
     }

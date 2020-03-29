@@ -10,7 +10,7 @@
     <div class="right">
       <el-dropdown>
         <div class="right-info">
-          <span>哈哈哈哈哈哈</span>
+          <span>{{userInfo.name}}</span>
           <el-avatar
             size="medium"
             src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
@@ -27,10 +27,13 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import User from '@/http/User'
 export default {
   name: 'home-top-header',
   data () {
-    return {}
+    return {
+      userInfo: {}
+    }
   },
   computed: {
     ...mapState(['leftAsideCollapse'])
@@ -40,10 +43,18 @@ export default {
     changeCollapse () {
       this.changeLeftAsideCollapse()
       console.log(this.leftAsideCollapse)
+    },
+    async getUserInfo () {
+      let { data: { data } } = await User.getUserInfo(this, { id: 3 })
+      this.userInfo = data
+      console.log(data)
     }
   },
   mounted () {
     console.log(this.leftAsideCollapse)
+  },
+  created () {
+    this.getUserInfo()
   }
 }
 </script>
