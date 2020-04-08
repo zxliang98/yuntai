@@ -2,13 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import PagesHome from '@/views/pages-home/PagesHome'
-import PagesTicket from '@/views/pages-ticket/PagesTicket'
+import PagesPlay from '@/views/pages-play/PagesPlay'
 import PagesNotice from '@/views/pages-notice/PagesNotice'
 import PagesZone from '@/views/pages-zone/PagesZone'
 import PagesStaff from '@/views/pages-staff/PagesStaff'
-import PagesAbout from './../views/pages-about/PagesAbout'
+import PagesAbout from '@/views/pages-about/PagesAbout'
+import CreateNew from '@/views/create-new/createNew'
+import DetailNew from '@/views/detail/notice-detail/noticeDetail'
 
-import Login from './../views/login/login'
+import Login from '@/views/login/login'
 
 Vue.use(VueRouter)
 
@@ -27,9 +29,9 @@ const routes = [
         name: 'pages-home',
         component: PagesHome
       }, {
-        path: '/ticket',
-        name: 'pages-ticket',
-        component: PagesTicket
+        path: '/play',
+        name: 'pages-play',
+        component: PagesPlay
       }, {
         path: '/zone',
         name: 'pages-zone',
@@ -46,6 +48,14 @@ const routes = [
         path: '/about',
         name: 'pages-about',
         component: PagesAbout
+      }, {
+        path: '/create/:type',
+        name: 'create-new',
+        component: CreateNew
+      }, {
+        path: '/detail/:id',
+        name: 'detail',
+        component: DetailNew
       }
     ]
   }

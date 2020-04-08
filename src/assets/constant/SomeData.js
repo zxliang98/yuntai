@@ -4,32 +4,37 @@
 export const HOMELEFTASIDE = [
   {
     id: 1,
-    route: 'home',
+    route: '/home',
     icon: 'el-icon-house',
     text: '首页'
-  }, {
-    id: 2,
-    route: 'ticket',
-    icon: 'el-icon-film',
-    text: '售票管理'
-  }, {
+  },
+  {
     id: 3,
-    route: 'zone',
+    route: '/zone',
     icon: 'el-icon-guide',
     text: '景区管理'
-  }, {
+  },
+  {
     id: 4,
-    route: 'notice',
+    route: '/notice',
     icon: 'el-icon-bell',
     text: '公告管理'
-  }, {
+  },
+  {
+    id: 2,
+    route: '/play',
+    icon: 'el-icon-film',
+    text: '游玩管理'
+  },
+  {
     id: 5,
-    route: 'staff',
+    route: '/staff',
     icon: 'el-icon-user',
     text: '员工管理'
-  }, {
+  },
+  {
     id: 6,
-    route: 'about',
+    route: '/about',
     icon: 'el-icon-loading',
     text: '关于我们'
   }

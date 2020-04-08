@@ -103,3 +103,61 @@ app.post('/add-user', (req, res) => {
     })
   })
 })
+
+app.post('/notice', (req, res) => {
+  const { title, type, content, userName, state } = req.body
+  let qSQL = `insert into notice(title, type, content, publishTime, userName, state) values('${title}','${type}','${content}','${Date.now()}','${userName}','${state}')`
+  db.query(qSQL, [], (rows, fields) => {
+    let id
+    let qSQL1 = 'select max(id) from notice'
+    db.query(qSQL1, [], (rows, fields) => {
+      console.log('rowsrowsrows', rows[0])
+      id = rows[0]['max(id)']
+      res.json({
+        code: 0,
+        msg: 'success',
+        data: {
+          id: id,
+          title: title,
+          type: type,
+          content: content
+        }
+      })
+    })
+  })
+})
+
+app.get('/noticeList', (req, res) => {
+  let { pn, pl } = req.query
+  let state = req.query.state
+  let type = req.query.type
+  let qSQL
+  if (state && type) {
+    qSQL = `select * from notice where state=${state}&&type=${type} order by id desc limit ${pn * pl},${pl} `
+  } else if (state) {
+    qSQL = `select * from notice where state=${state} order by id desc limit ${pn * pl},${pl} `
+  } else if (type) {
+    qSQL = `select * from notice where type=${type} order by id desc limit ${pn * pl},${pl} `
+  } else {
+    qSQL = `select * from notice order by id desc limit ${pn * pl},${pl}`
+  }
+  db.query(qSQL, [], (rows, fields) => {
+    res.json({
+      code: 0,
+      msg: 'success',
+      data: rows
+    })
+  })
+})
+
+app.get('/notice', (req, res) => {
+  let { id } = req.query
+  let qSQL = `select * from notice where id=${id}`
+  db.query(qSQL, [], (rows, fields) => {
+    res.json({
+      code: 0,
+      msg: 'success',
+      data: rows[0]
+    })
+  })
+})

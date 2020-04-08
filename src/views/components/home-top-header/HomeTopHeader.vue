@@ -8,6 +8,17 @@
       <p>toptoptop</p>
     </div>
     <div class="right">
+      <el-dropdown @command="createNew">
+        <el-button class="right-info" type="primary" size="small">新建</el-button>
+
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item
+            :command="item.type"
+            v-for="item in createOption"
+            :key="item.name"
+          >{{item.name}}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <el-dropdown>
         <div class="right-info">
           <span>{{userInfo.name}}</span>
@@ -17,8 +28,7 @@
           ></el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item>退出系统</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -32,7 +42,12 @@ export default {
   name: 'home-top-header',
   data () {
     return {
-      userInfo: {}
+      userInfo: {},
+      createOption: [
+        { type: 'view', name: '景区' },
+        { type: 'notice', name: '公告' },
+        { type: 'play', name: '游玩' }
+      ]
     }
   },
   computed: {
@@ -45,9 +60,14 @@ export default {
       console.log(this.leftAsideCollapse)
     },
     async getUserInfo () {
-      let { data: { data } } = await User.getUserInfo(this, { id: 3 })
+      let {
+        data: { data }
+      } = await User.getUserInfo(this, { id: 3 })
       this.userInfo = data
-      console.log(data)
+    },
+    createNew (item) {
+      console.log(1111, item)
+      this.$router.push({ name: 'create-new', params: { type: item } })
     }
   },
   mounted () {
@@ -73,7 +93,10 @@ export default {
     }
   }
   .right {
+    display: flex;
+    align-items: center;
     .right-info {
+      margin-left: 12px;
       height: 36px;
       display: flex;
       justify-content: flex-end;

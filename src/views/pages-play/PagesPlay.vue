@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-staff">
+  <div class="pages-play">
     <management-header></management-header>
     <management-table></management-table>
   </div>
