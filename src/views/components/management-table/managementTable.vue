@@ -13,9 +13,14 @@
           <el-tag :type="scope.row.state===1?'':'success'">{{scope.row.state===1?'已发布':'草稿'}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="类型">
+      <el-table-column label="类型" v-if="type==='notice'">
         <template slot-scope="scope">
           <el-tag :type="scope.row.type===1?'':'success'">{{scope.row.type===1?'景区新闻':'公告通知'}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="类型" v-if="type==='play'">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.type===0?'success':scope.row.type===1?'':'info'">{{scope.row.type===0?'特色美食':scope.row.type===1?'特产购物':'休闲娱乐'}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="内容">
@@ -44,6 +49,12 @@ export default {
       type: Array,
       default () {
         return []
+      }
+    },
+    type: {
+      type: String,
+      default () {
+        return ''
       }
     }
   },

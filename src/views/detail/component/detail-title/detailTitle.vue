@@ -20,12 +20,26 @@ export default {
       default () {
         return {
           title: '这个是标题',
-          userIcon: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+          userIcon:
+            'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
           name: '这个是名字',
           pubTime: '这个是时间'
         }
       }
     }
+  },
+  watch: {
+    titleInfo: {
+      handler (n) {
+        this.titleInfo = n
+      },
+      deep: true
+    }
+  },
+  created () {
+    console.log(1111111111111111)
+
+    console.log(this.titleInfo)
   }
 }
 </script>

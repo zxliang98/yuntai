@@ -4,7 +4,7 @@
       <el-form-item label="标题">
         <el-input v-model="createView.title"></el-input>
       </el-form-item>
-      <el-form-item label="类型">
+      <el-form-item v-if="typeOptions.length" label="类型">
         <el-select v-model="createView.type" clearable placeholder="请选择类型">
           <el-option
             v-for="item in typeOptions"
@@ -34,10 +34,6 @@ export default {
         type: '',
         content: ''
       },
-      typeOptions: [
-        { id: 0, label: '公告通知' },
-        { id: 1, label: '景区新闻' }
-      ],
       editorOption: {
         placeholder: '',
         modules: {
@@ -46,22 +42,52 @@ export default {
             ['blockquote', 'code-block'],
             [{ header: 1 }, { header: 2 }],
             [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ indent: '-1' }, { indent: '+1' }],
-            ['image']
+            [{ indent: '-1' }, { indent: '+1' }]
+            // ['image']
           ]
         }
       }
     }
   },
   computed: {},
+  props: {
+    typeOptions: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    type: {
+      type: String,
+      default () {
+        return ''
+      }
+    }
+  },
   methods: {
     submitView (state) {
       let params = {
         state: state,
         title: this.createView.title,
-        type: this.createView.type,
         content: this.createView.content,
         userName: '管理员'
+      }
+      if (this.type === 'view') {
+        if (
+          !this.createView.title ||
+          !this.createView.content
+        ) {
+          return this.$message.warning('请完整填写')
+        }
+      } else {
+        params.type = this.createView.type
+        if (
+          !this.createView.title ||
+          this.createView.type === '' ||
+          !this.createView.content
+        ) {
+          return this.$message.warning('请完整填写')
+        }
       }
       this.$emit('submitView', params)
     }

@@ -7,10 +7,9 @@
           <el-option label="已发布" value="1"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="类型">
+      <el-form-item label="类型" v-if="typeOptions.length">
         <el-select v-model="formInline.type" clearable placeholder="状态类型">
-          <el-option label="公告通知" value="0"></el-option>
-          <el-option label="景区新闻" value="1"></el-option>
+          <el-option :label="item.label" :value="item.id" v-for="item in typeOptions" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -30,7 +29,14 @@ export default {
       }
     }
   },
-  props: {},
+  props: {
+    typeOptions: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
   methods: {
     findList () {
       this.$emit('findList', this.formInline)

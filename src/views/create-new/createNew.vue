@@ -2,7 +2,7 @@
   <div class="create-new">
     <my-breadcrumb :breadcrumb="breadcrumb"></my-breadcrumb>
     <div class="new-box">
-      <create-view @submitView="submitView"></create-view>
+      <create-view :type="type" :typeOptions="typeOptions" @submitView="submitView"></create-view>
     </div>
   </div>
 </template>
@@ -35,6 +35,31 @@ export default {
           break
       }
       return bb
+    },
+    typeOptions () {
+      let TO = []
+      switch (this.type) {
+        case 'view':
+          TO = []
+          break
+        case 'notice':
+          TO = [
+            { id: 0, label: '公告通知' },
+            { id: 1, label: '景区新闻' }
+          ]
+          break
+        case 'play':
+          TO = [
+            { id: 0, label: '特色美食' },
+            { id: 1, label: '特产购物' },
+            { id: 2, label: '休闲娱乐' }
+          ]
+          break
+
+        default:
+          break
+      }
+      return TO
     }
   },
   components: {
@@ -53,9 +78,21 @@ export default {
   },
   methods: {
     submitView (params) {
-      Publish.PublishNotice(this, params).then(res => {
-        this.$router.push({ name: 'pages-notice' })
-      })
+      console.log(params)
+
+      if (this.type === 'zone') {
+        Publish.PublishView(this, params).then(res => {
+          this.$router.push({ name: 'pages-zone' })
+        })
+      } else if (this.type === 'view') {
+        Publish.PublishNotice(this, params).then(res => {
+          this.$router.push({ name: 'pages-notice' })
+        })
+      } else if (this.type === 'play') {
+        Publish.PublishPlay(this, params).then(res => {
+          this.$router.push({ name: 'pages-play' })
+        })
+      }
     }
   }
 }

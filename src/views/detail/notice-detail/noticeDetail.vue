@@ -1,7 +1,8 @@
 <template>
-  <div class="notice-detail">
+  <div class="notice-detail" v-if="show">
+    <my-breadcrumb :breadcrumb="breadcrumb"></my-breadcrumb>
     <detail-title :title-info="titleInfo"></detail-title>
-    <!-- <p :v-html="content"></p> -->
+    <div class="content" v-html="content"></div>
   </div>
 </template>
 
@@ -12,8 +13,35 @@ export default {
   data () {
     return {
       id: 0,
+      show: false,
       titleInfo: {},
-      content: ''
+      resInfo: {},
+      content: '',
+      type: ''
+    }
+  },
+  computed: {
+    breadcrumb () {
+      let bb = []
+      bb.push({ name: '首页', path: { path: '/' } })
+      switch (this.type) {
+        case 'view':
+          bb.push({ name: '景区管理', path: { path: '/zone' } })
+          bb.push({ name: `景区详情` })
+          break
+        case 'notice':
+          bb.push({ name: '公告管理', path: { path: '/notice' } })
+          bb.push({ name: `公告详情` })
+          break
+        case 'play':
+          bb.push({ name: '游玩管理', path: { path: '/play' } })
+          bb.push({ name: `游玩详情` })
+          break
+
+        default:
+          break
+      }
+      return bb
     }
   },
   components: {
@@ -21,23 +49,37 @@ export default {
   },
   methods: {
     async getNoticeDetail () {
-      let {
-        data: { data }
-      } = await Content.ContentNotice(this, { id: this.id })
-      this.titleInfo.title = data.title
-      this.titleInfo.name = data.userName
-      this.titleInfo.pubTime = data.publishTime
+      if (this.type === 'view') {
+        this.resInfo = await Content.ContentView(this, { id: this.id })
+      } else if (this.type === 'notice') {
+        this.resInfo = await Content.ContentNotice(this, { id: this.id })
+      } else if (this.type === 'play') {
+        this.resInfo = await Content.ContentPlay(this, { id: this.id })
+      }
+      this.titleInfo.title = this.resInfo.data.data.title
+      this.titleInfo.name = this.resInfo.data.data.userName
+      this.titleInfo.pubTime = this.resInfo.data.data.publishTime
       this.titleInfo.userIcon =
         'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-      this.content = data.content
+      this.content = this.resInfo.data.data.content
+      this.show = true
     }
   },
   created () {
     this.id = this.$route.params.id
+    this.type = this.$route.query.type
     this.getNoticeDetail()
   }
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.notice-detail {
+  .content {
+    margin-top: 24px;
+  }
+  .my-breadcrumb {
+    margin-bottom: 20px;
+  }
+}
 </style>

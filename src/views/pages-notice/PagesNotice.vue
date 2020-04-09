@@ -1,7 +1,7 @@
 <template>
   <div class="pages-notice">
-    <management-header @findList="findList"></management-header>
-    <management-table @toDetail="toDetail" :tableList="noticeList"></management-table>
+    <management-header @findList="findList" :typeOptions="typeOptions"></management-header>
+    <management-table type="notice" @toDetail="toDetail" :tableList="noticeList"></management-table>
   </div>
 </template>
 
@@ -14,7 +14,11 @@ export default {
     return {
       pn: 0,
       pl: 10,
-      noticeList: []
+      noticeList: [],
+      typeOptions: [
+        { id: 0, label: '公告通知' },
+        { id: 1, label: '景区新闻' }
+      ]
     }
   },
   components: {
@@ -37,13 +41,13 @@ export default {
       if (prop.state) {
         params.state = prop.state
       }
-      if (prop.type) {
+      if (prop.type !== '') {
         params.type = prop.type
       }
       this.getNoticeList(params)
     },
     toDetail (prop) {
-      this.$router.push({ name: 'detail', params: { id: prop.id } })
+      this.$router.push({ name: 'detail', params: { id: prop.id }, query: { type: 'notice' } })
     }
   },
   created () {
@@ -53,8 +57,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-pagination {
-  margin: 12px 0;
-  text-align: right;
+.pages-notice {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 </style>

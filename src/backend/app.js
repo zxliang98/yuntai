@@ -104,6 +104,7 @@ app.post('/add-user', (req, res) => {
   })
 })
 
+// 发布公告
 app.post('/notice', (req, res) => {
   const { title, type, content, userName, state } = req.body
   let qSQL = `insert into notice(title, type, content, publishTime, userName, state) values('${title}','${type}','${content}','${Date.now()}','${userName}','${state}')`
@@ -127,6 +128,7 @@ app.post('/notice', (req, res) => {
   })
 })
 
+// 获取公告列表
 app.get('/noticeList', (req, res) => {
   let { pn, pl } = req.query
   let state = req.query.state
@@ -150,9 +152,131 @@ app.get('/noticeList', (req, res) => {
   })
 })
 
+// 获取单个公告
 app.get('/notice', (req, res) => {
   let { id } = req.query
   let qSQL = `select * from notice where id=${id}`
+  db.query(qSQL, [], (rows, fields) => {
+    res.json({
+      code: 0,
+      msg: 'success',
+      data: rows[0]
+    })
+  })
+})
+
+// 发布景区
+app.post('/view', (req, res) => {
+  const { title, content, userName, state } = req.body
+  let qSQL = `insert into view(title, content, publishTime, userName, state) values('${title}','${content}','${Date.now()}','${userName}','${state}')`
+  db.query(qSQL, [], (rows, fields) => {
+    let id
+    let qSQL1 = 'select max(id) from view'
+    db.query(qSQL1, [], (rows, fields) => {
+      console.log('rowsrowsrows', rows[0])
+      id = rows[0]['max(id)']
+      res.json({
+        code: 0,
+        msg: 'success',
+        data: {
+          id: id,
+          title: title,
+          content: content
+        }
+      })
+    })
+  })
+})
+
+// 获取景区列表
+app.get('/viewList', (req, res) => {
+  let { pn, pl } = req.query
+  let state = req.query.state
+  let type = req.query.type
+  let qSQL
+  if (state && type) {
+    qSQL = `select * from view where state=${state}&&type=${type} order by id desc limit ${pn * pl},${pl} `
+  } else if (state) {
+    qSQL = `select * from view where state=${state} order by id desc limit ${pn * pl},${pl} `
+  } else if (type) {
+    qSQL = `select * from view where type=${type} order by id desc limit ${pn * pl},${pl} `
+  } else {
+    qSQL = `select * from view order by id desc limit ${pn * pl},${pl}`
+  }
+  db.query(qSQL, [], (rows, fields) => {
+    res.json({
+      code: 0,
+      msg: 'success',
+      data: rows
+    })
+  })
+})
+
+// 获取单个景区
+app.get('/view', (req, res) => {
+  let { id } = req.query
+  let qSQL = `select * from view where id=${id}`
+  db.query(qSQL, [], (rows, fields) => {
+    res.json({
+      code: 0,
+      msg: 'success',
+      data: rows[0]
+    })
+  })
+})
+
+// 发布游玩
+app.post('/play', (req, res) => {
+  const { title, type, content, userName, state } = req.body
+  let qSQL = `insert into play(title, type, content, publishTime, userName, state) values('${title}','${type}','${content}','${Date.now()}','${userName}','${state}')`
+  db.query(qSQL, [], (rows, fields) => {
+    let id
+    let qSQL1 = 'select max(id) from play'
+    db.query(qSQL1, [], (rows, fields) => {
+      console.log('rowsrowsrows', rows[0])
+      id = rows[0]['max(id)']
+      res.json({
+        code: 0,
+        msg: 'success',
+        data: {
+          id: id,
+          title: title,
+          type: type,
+          content: content
+        }
+      })
+    })
+  })
+})
+
+// 获取游玩列表
+app.get('/playList', (req, res) => {
+  let { pn, pl } = req.query
+  let state = req.query.state
+  let type = req.query.type
+  let qSQL
+  if (state && type) {
+    qSQL = `select * from play where state=${state}&&type=${type} order by id desc limit ${pn * pl},${pl} `
+  } else if (state) {
+    qSQL = `select * from play where state=${state} order by id desc limit ${pn * pl},${pl} `
+  } else if (type) {
+    qSQL = `select * from play where type=${type} order by id desc limit ${pn * pl},${pl} `
+  } else {
+    qSQL = `select * from play order by id desc limit ${pn * pl},${pl}`
+  }
+  db.query(qSQL, [], (rows, fields) => {
+    res.json({
+      code: 0,
+      msg: 'success',
+      data: rows
+    })
+  })
+})
+
+// 获取单个游玩
+app.get('/play', (req, res) => {
+  let { id } = req.query
+  let qSQL = `select * from play where id=${id}`
   db.query(qSQL, [], (rows, fields) => {
     res.json({
       code: 0,
