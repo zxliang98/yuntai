@@ -4,12 +4,13 @@
     <div class="bot">
       <el-avatar :src="titleInfo.userIcon"></el-avatar>
       <div class="name">{{titleInfo.name}}</div>
-      <div class="time">{{titleInfo.pubTime}}</div>
+      <div class="time">{{getDataTime(titleInfo.pubTime)}}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { useTimes } from '@/common/utils'
 export default {
   data () {
     return {}
@@ -35,6 +36,9 @@ export default {
       },
       deep: true
     }
+  },
+  methods: {
+    ...useTimes
   },
   created () {
     console.log(1111111111111111)

@@ -80,11 +80,11 @@ export default {
     submitView (params) {
       console.log(params)
 
-      if (this.type === 'zone') {
+      if (this.type === 'view') {
         Publish.PublishView(this, params).then(res => {
           this.$router.push({ name: 'pages-zone' })
         })
-      } else if (this.type === 'view') {
+      } else if (this.type === 'notice') {
         Publish.PublishNotice(this, params).then(res => {
           this.$router.push({ name: 'pages-notice' })
         })
