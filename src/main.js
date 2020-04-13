@@ -11,7 +11,8 @@ import BaiduMap from 'vue-baidu-map'
 import './style/base.less'
 import './style/index.less'
 
-import myBreadcrumb from './views/components/my-breadcrumb/myBreadcrumb'
+import myBreadcrumb from '@/components/my-breadcrumb/myBreadcrumb'
+import myPullDownRefresh from '@/components/my-pull-down-refresh/myPullDownRefresh'
 
 import VueQuillEditor from 'vue-quill-editor'
 
@@ -22,6 +23,7 @@ import 'quill/dist/quill.bubble.css' // for bubble theme
 Vue.use(VueQuillEditor)
 
 Vue.component('my-breadcrumb', myBreadcrumb)
+Vue.component('my-pull-down-refresh', myPullDownRefresh)
 
 Vue.use(ElementUI)
 

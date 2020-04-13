@@ -8,7 +8,7 @@
       <el-header style="height:80px">
         <home-top-header></home-top-header>
       </el-header>
-      <el-main>
+      <el-main class="content">
         <router-view></router-view>
       </el-main>
       <el-footer>联系我们:12345678901</el-footer>
@@ -19,8 +19,8 @@
 <script>
 import { mapState } from 'vuex'
 
-import HomeLeftAside from './components/home-left-aside/HomeLeftAside'
-import HomeTopHeader from './components/home-top-header/HomeTopHeader'
+import HomeLeftAside from '@/components/home-left-aside/HomeLeftAside'
+import HomeTopHeader from '@/components/home-top-header/HomeTopHeader'
 export default {
   name: 'home',
   components: {
@@ -56,6 +56,22 @@ export default {
     .el-menu {
       height: 100%;
       border: 0 none;
+    }
+  }
+  .content {
+    // 设置滚动条样式
+    &::-webkit-scrollbar {
+      display: block;
+      width: 10px;
+      height: 100%;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background: #d6dbe0;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background: #eef4fa;
     }
   }
   .el-header {

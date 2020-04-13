@@ -1,7 +1,8 @@
 <template>
-  <div class="pages-play">
+  <div class="pages-play" v-infinite-scroll="loadMore">
     <management-header @findList="findList" :typeOptions="typeOptions"></management-header>
     <management-table type="play" @toDetail="toDetail" :tableList="playList"></management-table>
+    <my-pull-down-refresh :status="loadText"></my-pull-down-refresh>
   </div>
 </template>
 
@@ -14,12 +15,16 @@ export default {
     return {
       pn: 0,
       pl: 10,
+      state: '',
+      type: '',
       playList: [],
       typeOptions: [
         { id: 0, label: '特色美食' },
         { id: 1, label: '特产购物' },
         { id: 2, label: '休闲娱乐' }
-      ]
+      ],
+      loadText: 'hide',
+      loadFlag: false
     }
   },
   components: {
@@ -28,24 +33,28 @@ export default {
   },
   methods: {
     async getPlayList (params = {}) {
+      this.loadText = 'load'
       params.pn = this.pn
       params.pl = this.pl
+      params.state = this.state
+      params.type = this.type
       let {
         data: { data }
       } = await Content.ContentPlayList(this, params)
-      console.log(data)
-      this.playList = data
+      this.playList = [...this.playList, ...data]
+      if (data.length < this.pl) {
+        this.loadFlag = false
+        this.loadText = this.pn === 0 ? 'hide' : 'nomore'
+        return
+      }
+      this.loadFlag = true
     },
     findList (prop) {
       this.pn = 0
-      let params = {}
-      if (prop.state) {
-        params.state = prop.state
-      }
-      if (prop.type !== '') {
-        params.type = prop.type
-      }
-      this.getPlayList(params)
+      this.playList = []
+      this.state = prop.state
+      this.type = prop.type
+      this.getPlayList()
     },
     toDetail (prop) {
       this.$router.push({
@@ -53,6 +62,16 @@ export default {
         params: { id: prop.id },
         query: { type: 'play' }
       })
+    },
+    loadMore () {
+      if (this.loadFlag) {
+        this.loadFlag = false
+        console.log('loadMore')
+        setTimeout(() => {
+          this.pn++
+          this.getPlayList()
+        }, 500)
+      }
     }
   },
   created () {
