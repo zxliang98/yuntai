@@ -62,8 +62,8 @@ export default {
     // 设置滚动条样式
     &::-webkit-scrollbar {
       display: block;
-      width: 10px;
-      height: 100%;
+      // width: 10px;
+      // height: 100%;
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 5px;
@@ -76,6 +76,9 @@ export default {
   }
   .el-header {
     line-height: 80px;
+  }
+  .el-footer {
+    line-height: 60px;
   }
 }
 </style>

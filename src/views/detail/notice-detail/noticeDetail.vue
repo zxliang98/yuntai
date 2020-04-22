@@ -75,6 +75,8 @@ export default {
 
 <style lang="less" scoped>
 .notice-detail {
+  width: 900px;
+  margin: 0 auto;
   .content {
     margin-top: 24px;
   }
