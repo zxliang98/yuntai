@@ -19,16 +19,17 @@
           >{{item.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown>
+      <el-dropdown @command="logout">
         <div class="right-info">
-          <span>{{userInfo.name}}</span>
+          <span>{{store_userInfo.name}}</span>
           <el-avatar
             size="medium"
             src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
           ></el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出系统</el-dropdown-item>
+          <el-dropdown-item command="info">个人信息</el-dropdown-item>
+          <el-dropdown-item command="logout">退出系统</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -37,6 +38,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import { Storage } from '@/common/tools'
 import User from '@/http/User'
 export default {
   name: 'home-top-header',
@@ -51,10 +53,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['leftAsideCollapse'])
+    ...mapState(['leftAsideCollapse', 'store_userInfo'])
   },
   methods: {
-    ...mapMutations(['changeLeftAsideCollapse']),
+    ...mapMutations(['changeLeftAsideCollapse', 'store_changeUserInfo']),
     changeCollapse () {
       this.changeLeftAsideCollapse()
       console.log(this.leftAsideCollapse)
@@ -62,12 +64,24 @@ export default {
     async getUserInfo () {
       let {
         data: { data }
-      } = await User.getUserInfo(this, { id: 3 })
-      this.userInfo = data
+      } = await User.getUserInfo(this, { id: Storage.getToken() })
+      // this.userInfo = data
+      // Storage.set('userInfo', data)
+      this.store_changeUserInfo(data)
+      console.log(this.store_userInfo)
     },
     createNew (item) {
       console.log(1111, item)
       this.$router.push({ name: 'create-new', params: { type: item } })
+    },
+    logout (item) {
+      if (item === 'logout') {
+        Storage.removeToken()
+        this.$router.push({ name: 'login' })
+      }
+      if (item === 'info') {
+        this.$router.push({ name: 'pages-about' })
+      }
     }
   },
   mounted () {

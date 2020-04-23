@@ -48,11 +48,14 @@
 
 <script>
 import User from '@/http/User'
+import { Storage } from '@/common/tools'
 export default {
   data () {
     var checkConfirmPassward = (rule, value, callback) => {
       if (value !== this.registerInfo.passward) {
-        callback(new Error('密码输入不一致'))
+        return callback(new Error('密码输入不一致'))
+      } else {
+        return callback()
       }
     }
     return {
@@ -131,11 +134,13 @@ export default {
         if (valid) {
           console.log(this.loginInfo)
           let params = {
-            phoneNum: this.loginInfo.mobile,
+            phone: this.loginInfo.mobile,
             userPassword: this.loginInfo.passward
           }
           User.userLogin(this, params).then(res => {
             console.log(res)
+            Storage.setToken(res.data.id)
+            this.$router.push({ name: 'home' })
           })
         } else {
           console.log('error submit!!')
@@ -144,14 +149,22 @@ export default {
       })
     },
     register (formName) {
-      console.log(this.registerInfo)
       this.$refs[formName].validate(valid => {
-        console.log(valid)
-
         if (valid) {
-          console.log(22222222222222222)
-
-          console.log(this.registerInfo)
+          let params = {
+            phone: this.registerInfo.mobile,
+            userPassword: this.registerInfo.confirmPassward
+          }
+          User.getUserInfo(this, params).then(res => {
+            if (res.data.data.id) {
+              return this.$message.warning('您已注册,请直接登录')
+            } else {
+              User.userRegister(this, params).then(res => {
+                Storage.setToken(res.data.id)
+                this.$router.push({ name: 'home' })
+              })
+            }
+          })
         } else {
           console.log('error submit!!')
           return false

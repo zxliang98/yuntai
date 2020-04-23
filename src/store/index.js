@@ -13,7 +13,9 @@ export default new Vuex.Store({
       state.leftAsideCollapse = !state.leftAsideCollapse
     },
     store_changeUserInfo (state, info) {
-      state.userInfo = info
+      console.log(info)
+
+      state.store_userInfo = info
     }
   },
   actions: {

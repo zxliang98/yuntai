@@ -36,6 +36,6 @@ export const HOMELEFTASIDE = [
     id: 6,
     route: '/about',
     icon: 'el-icon-loading',
-    text: '关于我们'
+    text: '我的信息'
   }
 ]

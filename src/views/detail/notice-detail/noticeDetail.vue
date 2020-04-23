@@ -79,6 +79,9 @@ export default {
   margin: 0 auto;
   .content {
     margin-top: 24px;
+    /deep/ pre {
+      white-space: pre-wrap;
+    }
   }
   .my-breadcrumb {
     margin-bottom: 20px;
