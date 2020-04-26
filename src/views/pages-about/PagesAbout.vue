@@ -64,6 +64,7 @@ export default {
       User.updateUserInfo(this, this.userInfo).then(res => {
         console.log(res)
         this.store_changeUserInfo(this.userInfo)
+        this.$message.success('修改成功')
       })
     }
   }

@@ -38,11 +38,9 @@ export default {
       params.pl = this.pl
       params.state = this.state
       params.type = this.type
-      let {
-        data: { data }
-      } = await Content.ContentPlayList(this, params)
-      this.playList = [...this.playList, ...data]
-      if (data.length < this.pl) {
+      let res = await Content.ContentPlayList(this, params)
+      this.playList = [...this.playList, ...res.data]
+      if (res.data.length < this.pl) {
         this.loadFlag = false
         this.loadText = this.pn === 0 ? 'hide' : 'nomore'
         return

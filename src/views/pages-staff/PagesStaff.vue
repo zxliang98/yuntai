@@ -20,6 +20,11 @@ export default {
         { id: 1, label: '离职' }
       ]
     }
+  },
+  methods: {
+    findList () {
+
+    }
   }
 }
 </script>

@@ -33,11 +33,9 @@ export default {
       params.pl = this.pl
       params.state = this.state
       params.type = this.type
-      let {
-        data: { data }
-      } = await Content.ContentViewList(this, params)
-      this.viewList = [...this.viewList, ...data]
-      if (data.length < this.pl) {
+      let res = await Content.ContentViewList(this, params)
+      this.viewList = [...this.viewList, ...res.data]
+      if (res.data.length < this.pl) {
         this.loadFlag = false
         this.loadText = this.pn === 0 ? 'hide' : 'nomore'
         return
@@ -46,13 +44,17 @@ export default {
     },
     findList (prop) {
       this.pn = 0
-      this.viewList = [ ]
+      this.viewList = []
       this.state = prop.state
       this.type = prop.type
       this.getViewList()
     },
     toDetail (prop) {
-      this.$router.push({ name: 'detail', params: { id: prop.id }, query: { type: 'view' } })
+      this.$router.push({
+        name: 'detail',
+        params: { id: prop.id },
+        query: { type: 'view' }
+      })
     },
     loadMore () {
       if (this.loadFlag) {

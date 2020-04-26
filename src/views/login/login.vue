@@ -49,6 +49,7 @@
 <script>
 import User from '@/http/User'
 import { Storage } from '@/common/tools'
+const CODE = 'abc12321cba'
 export default {
   data () {
     var checkConfirmPassward = (rule, value, callback) => {
@@ -139,8 +140,16 @@ export default {
           }
           User.userLogin(this, params).then(res => {
             console.log(res)
-            Storage.setToken(res.data.id)
-            this.$router.push({ name: 'home' })
+            if (res.code === 0) {
+              Storage.setToken(res.id)
+              this.$router.push({ name: 'home' })
+            } else {
+              this.loginInfo = {
+                mobile: '',
+                passward: ''
+              }
+              return this.$message.error('用户名或密码错误')
+            }
           })
         } else {
           console.log('error submit!!')
@@ -149,6 +158,9 @@ export default {
       })
     },
     register (formName) {
+      if (this.registerInfo.code !== CODE) {
+        return this.$message.warning('邀请码错误,请联系管理员')
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           let params = {
@@ -156,11 +168,11 @@ export default {
             userPassword: this.registerInfo.confirmPassward
           }
           User.getUserInfo(this, params).then(res => {
-            if (res.data.data.id) {
+            if (res.id) {
               return this.$message.warning('您已注册,请直接登录')
             } else {
               User.userRegister(this, params).then(res => {
-                Storage.setToken(res.data.id)
+                Storage.setToken(res.id)
                 this.$router.push({ name: 'home' })
               })
             }

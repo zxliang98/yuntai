@@ -38,17 +38,14 @@ export default {
       params.state = this.state
       params.type = this.type
       console.log(params)
-      let {
-        data: { data }
-      } = await Content.ContentNoticeList(this, params)
-      this.noticeList = [...this.noticeList, ...data]
-      if (data.length < this.pl) {
+      let res = await Content.ContentNoticeList(this, params)
+      this.noticeList = [...this.noticeList, ...res.data]
+      if (res.data.length < this.pl) {
         this.loadFlag = false
         this.loadText = this.pn === 0 ? 'hide' : 'nomore'
         return
       }
       this.loadFlag = true
-      console.log(data)
     },
     findList (prop) {
       this.pn = 0

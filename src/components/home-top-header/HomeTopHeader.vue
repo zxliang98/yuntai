@@ -62,12 +62,8 @@ export default {
       console.log(this.leftAsideCollapse)
     },
     async getUserInfo () {
-      let {
-        data: { data }
-      } = await User.getUserInfo(this, { id: Storage.getToken() })
-      // this.userInfo = data
-      // Storage.set('userInfo', data)
-      this.store_changeUserInfo(data)
+      let res = await User.getUserInfo(this, { id: Storage.getToken() })
+      this.store_changeUserInfo(res.data)
       console.log(this.store_userInfo)
     },
     createNew (item) {
