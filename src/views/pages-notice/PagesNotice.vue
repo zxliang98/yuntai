@@ -1,8 +1,10 @@
 <template>
-  <div class="pages-notice" v-infinite-scroll="loadMore">
+  <div class="pages-notice">
     <management-header @findList="findList" :typeOptions="typeOptions"></management-header>
     <management-table type="notice" @clickAction="clickAction" :tableList="noticeList"></management-table>
-    <my-pull-down-refresh :status="loadText"></my-pull-down-refresh>
+    <div style="display :flex;justify-content: flex-end;margin-top: 20px">
+      <el-pagination @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -14,7 +16,7 @@ export default {
   data () {
     return {
       pn: 0,
-      pl: 10,
+      pl: 8,
       state: '',
       type: '',
       noticeList: [],
@@ -22,8 +24,7 @@ export default {
         { id: 0, label: '公告通知' },
         { id: 1, label: '景区新闻' }
       ],
-      loadText: 'hide',
-      loadFlag: false
+      total: 0
     }
   },
   components: {
@@ -32,7 +33,6 @@ export default {
   },
   methods: {
     async getNoticeList (params = {}) {
-      this.loadText = 'load'
       params.pn = this.pn
       params.pl = this.pl
       params.state = this.state
@@ -40,12 +40,7 @@ export default {
       console.log(params)
       let res = await Content.ContentNoticeList(this, params)
       this.noticeList = [...this.noticeList, ...res.data]
-      if (res.data.length < this.pl) {
-        this.loadFlag = false
-        this.loadText = this.pn === 0 ? 'hide' : 'nomore'
-        return
-      }
-      this.loadFlag = true
+      this.total = res.total
     },
     findList (prop) {
       this.pn = 0
@@ -92,15 +87,10 @@ export default {
           })
       }
     },
-    loadMore () {
-      if (this.loadFlag) {
-        this.loadFlag = false
-        console.log('loadMore')
-        setTimeout(() => {
-          this.pn++
-          this.getNoticeList()
-        }, 500)
-      }
+    changePage (p) {
+      this.pn = p - 1
+      this.noticeList = []
+      this.getNoticeList()
     }
   },
   created () {

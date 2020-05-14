@@ -1,8 +1,10 @@
 <template>
-  <div class="pages-zone" v-infinite-scroll="loadMore">
+  <div class="pages-zone">
     <management-header @findList="findList"></management-header>
     <management-table @clickAction="clickAction" :tableList="viewList" type="view"></management-table>
-    <my-pull-down-refresh :status="loadText"></my-pull-down-refresh>
+    <div style="display :flex;justify-content: flex-end;margin-top: 20px">
+      <el-pagination @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -14,12 +16,11 @@ export default {
   data () {
     return {
       pn: 0,
-      pl: 10,
+      pl: 8,
       state: '',
       type: '',
       viewList: [],
-      loadText: 'hide',
-      loadFlag: false
+      total: 0
     }
   },
   components: {
@@ -28,19 +29,13 @@ export default {
   },
   methods: {
     async getViewList (params = {}) {
-      this.loadText = 'load'
       params.pn = this.pn
       params.pl = this.pl
       params.state = this.state
       params.type = this.type
       let res = await Content.ContentViewList(this, params)
+      this.total = res.total
       this.viewList = [...this.viewList, ...res.data]
-      if (res.data.length < this.pl) {
-        this.loadFlag = false
-        this.loadText = this.pn === 0 ? 'hide' : 'nomore'
-        return
-      }
-      this.loadFlag = true
     },
     findList (prop) {
       this.pn = 0
@@ -87,15 +82,10 @@ export default {
           })
       }
     },
-    loadMore () {
-      if (this.loadFlag) {
-        this.loadFlag = false
-        console.log('loadMore')
-        setTimeout(() => {
-          this.pn++
-          this.getViewList()
-        }, 500)
-      }
+    changePage (p) {
+      this.pn = p - 1
+      this.viewList = []
+      this.getViewList()
     }
   },
   created () {

@@ -7,6 +7,9 @@
       :tableList="userList"
       :userType="userType"
     ></management-table>
+    <div style="display :flex;justify-content: flex-end;margin-top: 20px">
+      <el-pagination @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
+    </div>
     <el-dialog width="400px" title="查看用户信息" :visible.sync="dialogDetailVisible">
       <el-form :model="userInfo" label-width="60px">
         <el-form-item label="姓名">{{userInfo.name}}</el-form-item>
@@ -83,12 +86,13 @@ export default {
       ],
       userList: [],
       pn: 0,
-      pl: 10,
+      pl: 8,
       userType: 0,
       userId: 0,
       dialogDetailVisible: false,
       dialogEditVisible: false,
-      userInfo: {}
+      userInfo: {},
+      total: 0
     }
   },
   methods: {
@@ -109,6 +113,7 @@ export default {
       let data = await User.getUserList(this, params)
       console.log(data)
       this.userList = data.list
+      this.total = data.total
     },
     clickAction (item, type) {
       if (type === 'detail') {
@@ -149,6 +154,11 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    changePage (p) {
+      this.pn = p - 1
+      this.userList = []
+      this.getUserList()
     }
   },
   created () {
