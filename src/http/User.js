@@ -51,4 +51,30 @@ export default class User {
       url: `/user`
     })
   }
+  /**
+   * 获取用户列表
+   * @param {Object} that this
+   * @param {Object} params 传参
+   */
+  static getUserList (that, params = {}) {
+    return that.$http({
+      that,
+      method: 'get',
+      params: params,
+      url: `/userList`
+    })
+  }
+  /**
+   * 删除用户
+   * @param {Object} that this
+   * @param {Object} params 传参
+   */
+  static deleteUser (that, params = {}) {
+    return that.$http({
+      that,
+      method: 'delete',
+      data: params,
+      url: `/user`
+    })
+  }
 }

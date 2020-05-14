@@ -73,6 +73,7 @@ export default {
     logout (item) {
       if (item === 'logout') {
         Storage.removeToken()
+        Storage.remove('YUNTAI-USER-TYPE')
         this.$router.push({ name: 'login' })
       }
       if (item === 'info') {

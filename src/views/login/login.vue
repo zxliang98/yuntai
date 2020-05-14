@@ -141,7 +141,15 @@ export default {
           User.userLogin(this, params).then(res => {
             console.log(res)
             if (res.code === 0) {
+              if (res.type === 2) {
+                this.loginInfo = {
+                  mobile: '',
+                  passward: ''
+                }
+                return this.$message.error('权限不够,请联系管理员!')
+              }
               Storage.setToken(res.id)
+              Storage.set('YUNTAI-USER-TYPE', res.type)
               this.$router.push({ name: 'home' })
             } else {
               this.loginInfo = {
