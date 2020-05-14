@@ -62,6 +62,12 @@ export default {
       default () {
         return ''
       }
+    },
+    haveData: {
+      type: Object,
+      default () {
+        return null
+      }
     }
   },
   methods: {
@@ -73,10 +79,7 @@ export default {
         userName: '管理员'
       }
       if (this.type === 'view') {
-        if (
-          !this.createView.title ||
-          !this.createView.content
-        ) {
+        if (!this.createView.title || !this.createView.content) {
           return this.$message.warning('请完整填写')
         }
       } else {
@@ -92,7 +95,17 @@ export default {
       this.$emit('submitView', params)
     }
   },
-  created () {}
+  created () {
+
+  },
+  watch: {
+    haveData: {
+      handler (n) {
+        this.createView = n
+      },
+      deep: true
+    }
+  }
 }
 </script>
 

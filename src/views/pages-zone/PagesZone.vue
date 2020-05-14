@@ -1,7 +1,7 @@
 <template>
   <div class="pages-zone" v-infinite-scroll="loadMore">
     <management-header @findList="findList"></management-header>
-    <management-table @toDetail="toDetail" :tableList="viewList" type="view"></management-table>
+    <management-table @clickAction="clickAction" :tableList="viewList" type="view"></management-table>
     <my-pull-down-refresh :status="loadText"></my-pull-down-refresh>
   </div>
 </template>
@@ -49,12 +49,41 @@ export default {
       this.type = prop.type
       this.getViewList()
     },
-    toDetail (prop) {
-      this.$router.push({
-        name: 'detail',
-        params: { id: prop.id },
-        query: { type: 'view' }
-      })
+    clickAction (item, type) {
+      if (type === 'detail') {
+        this.$router.push({
+          name: 'detail',
+          params: { id: item.id },
+          query: { type: 'view' }
+        })
+      } else if (type === 'edit') {
+        this.$router.push({
+          name: 'create-new',
+          params: { type: 'view' },
+          query: { id: item.id }
+        })
+      } else if (type === 'delete') {
+        this.$confirm('确定删除此用户吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            Content.deleteUser(this, { id: item.id }).then(res => {
+              this.getUserList()
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      }
     },
     loadMore () {
       if (this.loadFlag) {
