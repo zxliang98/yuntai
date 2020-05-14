@@ -74,8 +74,10 @@ export default {
           type: 'warning'
         })
           .then(() => {
-            Content.deleteUser(this, { id: item.id }).then(res => {
-              this.getUserList()
+            Content.DeletePlay(this, { id: item.id }).then(res => {
+              this.pn = 0
+              this.playList = []
+              this.getPlayList()
               this.$message({
                 type: 'success',
                 message: '删除成功!'
