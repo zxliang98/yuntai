@@ -8,7 +8,15 @@
       :userType="userType"
     ></management-table>
     <div style="display :flex;justify-content: flex-end;margin-top: 20px">
-      <el-pagination @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
+      <el-pagination
+        :current-page.sync="currentPage"
+        @current-change="changePage"
+        background
+        hide-on-single-page
+        layout="prev, pager, next"
+        :page-size="pl"
+        :total="total"
+      ></el-pagination>
     </div>
     <el-dialog width="400px" title="查看用户信息" :visible.sync="dialogDetailVisible">
       <el-form :model="userInfo" label-width="60px">
@@ -92,11 +100,13 @@ export default {
       dialogDetailVisible: false,
       dialogEditVisible: false,
       userInfo: {},
-      total: 0
+      total: 0,
+      currentPage: 1
     }
   },
   methods: {
     findList (prop) {
+      this.currentPage = 1
       this.pn = 0
       this.userList = []
       this.state = prop.state

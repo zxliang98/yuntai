@@ -3,7 +3,7 @@
     <management-header @findList="findList" :typeOptions="typeOptions"></management-header>
     <management-table type="play" @clickAction="clickAction" :tableList="playList"></management-table>
     <div style="display :flex;justify-content: flex-end;margin-top: 20px">
-      <el-pagination @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
+      <el-pagination :current-page.sync="currentPage" @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
     </div>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
         { id: 1, label: '特产购物' },
         { id: 2, label: '休闲娱乐' }
       ],
-      total: 0
+      total: 0,
+      currentPage: 1
     }
   },
   components: {
@@ -43,6 +44,7 @@ export default {
       this.total = res.total
     },
     findList (prop) {
+      this.currentPage = 1
       this.pn = 0
       this.playList = []
       this.state = prop.state

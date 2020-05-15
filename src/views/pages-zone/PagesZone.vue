@@ -3,7 +3,7 @@
     <management-header @findList="findList"></management-header>
     <management-table @clickAction="clickAction" :tableList="viewList" type="view"></management-table>
     <div style="display :flex;justify-content: flex-end;margin-top: 20px">
-      <el-pagination @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
+      <el-pagination :current-page.sync="currentPage" @current-change="changePage" background hide-on-single-page layout="prev, pager, next" :page-size="pl" :total="total"></el-pagination>
     </div>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
       state: '',
       type: '',
       viewList: [],
-      total: 0
+      total: 0,
+      currentPage: 1
     }
   },
   components: {
@@ -39,6 +40,9 @@ export default {
     },
     findList (prop) {
       this.pn = 0
+      this.currentPage = 1
+      console.log(this.currentPage)
+
       this.viewList = []
       this.state = prop.state
       this.type = prop.type
