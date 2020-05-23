@@ -65,7 +65,7 @@ export default {
           query: { id: item.id }
         })
       } else if (type === 'delete') {
-        this.$confirm('确定删除此用户吗?', '提示', {
+        this.$confirm('确定删除此公告吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

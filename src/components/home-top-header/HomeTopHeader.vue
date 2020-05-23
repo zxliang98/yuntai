@@ -5,7 +5,7 @@
         :class="['iconfont',leftAsideCollapse?' el-icon-s-unfold':'el-icon-s-fold']"
         @click="changeCollapse"
       ></i>
-      <p>toptoptop</p>
+      <p>云台山景区欢迎你</p>
     </div>
     <div class="right">
       <el-dropdown @command="createNew">
